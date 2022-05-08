@@ -1,36 +1,41 @@
 package com.moviz.movizapi.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-/*import java.util.Arrays;*/
 import java.util.List;
 
 @Service
 public class UserAuthService {
 
-    @Autowired
     private UserRepo userrepo;
-    /*private static List<User> Users = new ArrayList<>(Arrays.asList(
-            new Use*/
+    String Salt = BCrypt.gensalt(10);
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    public UserAuthService(UserRepo userrepo) {
+        this.userrepo = userrepo;
+    }
+
 
     public List<User> getAllUsers() {
-        //return Users;
         List<User> Users = new ArrayList<>();
         userrepo.findAll().forEach(Users::add);
         return Users;
     }
     public void addUser(User user) {
-        //Users.add(user);
+        user.setPassword(BCrypt.hashpw(user.getPassword(), Salt));
         userrepo.save(user);
     }
 
-    public List<User> getUserbyEmail(String email) {
-        return userrepo.findByEmail(email);
+    public boolean existsUserbyEmail(String email) {
+        return userrepo.existsByEmail(email);
     }
     
     public boolean AuthUser(String email,String password){
+        password = BCrypt.hashpw(password, Salt);
         return userrepo.existsUserByEmailAndPassword(email,password);
     }
 }
