@@ -1,4 +1,4 @@
-package com.moviz.movizapi.user;
+/*package com.moviz.movizapi.user;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -9,4 +9,4 @@ public interface UserRepo extends CrudRepository<User, Long> {
     boolean existsByEmail(String email);
     boolean existsUserByEmailAndPassword(String email,String password);
 
-}
+}*/

@@ -1,14 +1,17 @@
 package com.moviz.movizapi.user;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+/*import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;*/
+
+//@Entity
+@Document
 public class User {
     @Id
-    @GeneratedValue
-    private  Long id;
+    private  String id;
     private String name;
     private  String email;
     private String password;
@@ -24,11 +27,11 @@ public class User {
     public User() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

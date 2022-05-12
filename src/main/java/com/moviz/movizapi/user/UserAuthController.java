@@ -1,15 +1,11 @@
 package com.moviz.movizapi.user;
 
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -21,24 +17,24 @@ public class UserAuthController {
         this.userauthservice = userauthservice;
     }
 
-    @RequestMapping("/users")
+    @RequestMapping(method = RequestMethod.GET, value ="/users")
     public List<User> getAllUser() {
         return userauthservice.getAllUsers();
     }
 
-    @RequestMapping("/auth")
-    public boolean AuthUser(@RequestBody User user) {
-        return userauthservice.AuthUser(user.getEmail(),user.getPassword());
+    @RequestMapping(method = RequestMethod.POST, value = "/auth")
+    public Response AuthUser(@RequestBody Credentials user) {
+        return userauthservice.AuthUser(user.getEmail().toLowerCase(Locale.ROOT),user.getPassword());
     }
 
-    @RequestMapping("/users/{email}")
-    public boolean existsUserbyEmail( @PathVariable String email) {
+    @RequestMapping( method = RequestMethod.GET, value = "/users/{email}")
+    public boolean existsUserbyEmail(@PathVariable String email) {
         return userauthservice.existsUserbyEmail(email);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
     public ResponseEntity<Boolean> addUser(@RequestBody User user) {
-        if(!existsUserbyEmail(user.getEmail())) {
+        if(!existsUserbyEmail(user.getEmail().toLowerCase(Locale.ROOT))) {
             userauthservice.addUser(user);
             return new ResponseEntity<Boolean>(true, HttpStatus.OK);
         }
