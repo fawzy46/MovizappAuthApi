@@ -20,7 +20,6 @@ target/
 *.ipr
 derby.log
 
-
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
